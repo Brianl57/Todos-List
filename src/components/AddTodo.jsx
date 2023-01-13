@@ -1,10 +1,11 @@
-import { Button, HStack, Input, useToast } from '@chakra-ui/react'
+import { Button, HStack, Input, useToast, IconButton, Icon, Spacer } from '@chakra-ui/react'
 import React from 'react'
 import {useState} from 'react';
 import { nanoid } from 'nanoid';
+import { BsCheckAll } from 'react-icons/bs';
 
 
-function Addtodo({addTodo}) {
+function Addtodo({addTodo, toggleAll}) {
 
     const toast = useToast()
     
@@ -24,6 +25,7 @@ function Addtodo({addTodo}) {
         const todo = {
             id: nanoid(),
             body: content,
+            complete: false,
         };
         addTodo(todo);
         setContent("")
@@ -32,8 +34,16 @@ function Addtodo({addTodo}) {
     return (
         <form onSubmit={handleSubmit}>
             <HStack mt="8">
-                <Input variant="filled" placeholder="Write a todo" value={content} onChange={(e) => setContent(e.target.value)}/>
+                <Input variant="filled" placeholder="Write something to do." value={content} onChange={(e) => setContent(e.target.value)}/>
                 <Button colorScheme="pink" px="8" type="submit">Add</Button>
+                
+                <IconButton 
+                    icon={<BsCheckAll />}
+                    variant="outline"
+                    size="md"
+                    onClick={toggleAll}
+                    colorScheme="pink"
+                />
             </HStack>
         </form>
   )

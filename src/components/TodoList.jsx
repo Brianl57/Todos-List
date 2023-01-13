@@ -1,16 +1,19 @@
 import React from 'react';
-import { HStack, VStack, Text, IconButton, StackDivider, Spacer, Badge } from '@chakra-ui/react';
+import { HStack, VStack, Text, IconButton, StackDivider, Spacer, Badge, Box } from '@chakra-ui/react';
 import { FaTrash } from 'react-icons/fa';
+import { CheckIcon } from '@chakra-ui/icons';
 
-function Todolist({todos, deleteTodo}) {
+function Todolist({colorMode, todos, deleteTodo, completeTodo }) {
 
     if (!todos.length) {
         return (
-            <Badge colorScheme="green" p="4" m="4" borderRadius="lg">
-                Nothing more to do. YAY!!!
+            <Badge colorScheme="green" p="3" m="4" borderRadius="lg">
+                Nothing more to do! YAY!!!
             </Badge>
         )
     }
+
+    const strikThroughColor = colorMode === "light" ? "#C2C5D3" : "#323744";
 
   return (
     <VStack 
@@ -24,15 +27,35 @@ function Todolist({todos, deleteTodo}) {
         alignItems="stretch"
     > 
         {todos.map(todo => (
-        <HStack key={todo.id}>
-            <Text>{todo.body}</Text>
-            <Spacer />
-            <IconButton 
-                icon={<FaTrash />} 
-                isRound={true} 
-                onClick={() => deleteTodo(todo.id)}
-            />
-        </HStack>))}
+        
+            <HStack 
+                p={2} 
+                borderRadius={8} 
+                color={todo.complete? strikThroughColor : null }
+                key={todo.id}
+            >
+                <Text 
+                    fontWeight={800} 
+                    decoration={todo.complete? "line-through" : null} 
+                >&#x2022; {todo.body}</Text>
+                <Spacer />
+                <IconButton
+                    icon={<CheckIcon/>}
+                    variant="unstyled"
+                    isRound={true}
+                    size="sm"
+                    onClick={() => completeTodo(todo.id)}
+                />
+                <IconButton 
+                    icon={<FaTrash />} 
+                    isRound={true} 
+                    variant="unstyled"
+                    size="sm"
+                    onClick={() => deleteTodo(todo.id)}
+                />
+            </HStack>
+       
+        ))}
     </VStack>
   )
 }

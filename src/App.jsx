@@ -7,24 +7,46 @@ import { FaSun, FaMoon } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
  
 function App() {
-
-  const initialTodos = [
+  
+  const exampleTodos = [
     {
-        id: 1,
-        body: "Write something ",
+      id: 1,
+      body: "Practice my instrument.",
+      complete: false,
     },
     {
-        id: 2,
-        body: "get butter",
-    
+      id: 2,
+      body: "Slept for at least 4 hours.",
+      complete: false,
+    },
+    {
+      id: 3,
+      body: "Buy boba from Sunright Tea Studio.",
+      complete: true,
+    },
+    {
+      id: 4,
+      body: "Check TikTok content.",
+      complete: true,
+    },
+    {
+      id: 5,
+      body: "Play with Mocha.",
+      complete: true,
     }
-  ]
+  ];
 
-  const [todos, setTodos] = useState(() => JSON.parse(localStorage.getItem('todos')) || []);
+  const [todos, setTodos] = useState(() => JSON.parse(localStorage.getItem('todos')) || exampleTodos);
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos))
-  })
+  },)
+
+  function filterCompleted(todo) {
+    const completedTodos = todo.filter(todo => todo.complete === true)
+    const uncompletedTodos = todo.filter(todo => todo.complete === false)
+    return [...uncompletedTodos, ...completedTodos ]
+  }  
 
   function deleteTodo(id) {
     const newTodos = todos.filter(todo => {
@@ -34,7 +56,57 @@ function App() {
   }
 
   function addTodo(todo) {
-    setTodos([...todos, todo])
+    setTodos([todo, ...todos]);
+  }
+
+  function completeTodo(id) {    
+    var updatedTodos = [];
+    for (var i = 0; i < todos.length; i++) {
+      if (todos[i].id === id) {
+        let updatedTodo = {
+          ...todos[i],
+          complete: !todos[i].complete
+        }
+        updatedTodos.push(updatedTodo)
+      } else {
+        updatedTodos.push(todos[i])
+      }
+    }
+    setTodos(filterCompleted(updatedTodos));
+    
+  }
+
+  function toggleAll() {
+    var updatedTodos = [];
+
+    const allComplete = (todo) => todo.complete === true;
+    const notAllComplete = (todo) => todo.complete === false;
+
+    const toggleAll = (todos) => {
+      for (var i = 0; i < todos.length; i++) {
+        updatedTodos.push(
+          {
+          ...todos[i],
+          complete: !todos[i].complete
+          }
+        )
+      }
+    }
+
+    if (todos.every(allComplete) || todos.every(notAllComplete)) {
+      toggleAll(todos)
+    } else {
+      for (var i = 0; i < todos.length; i++) {
+        if (!todos[i].complete) {
+          updatedTodos.push({
+          ...todos[i],
+          complete: !todos[i].complete
+        })} else {
+          updatedTodos.push(todos[i])
+        }  
+      }
+    }
+    setTodos(updatedTodos)
   }
 
   const {colorMode, toggleColorMode} = useColorMode();
@@ -56,9 +128,9 @@ function App() {
         bgGradient="linear(to-r, pink.500, pink.300, blue.500)" 
         bgClip="text"
       >My Todo's</Heading>
-      <Addtodo addTodo={addTodo}/>
+      <Addtodo addTodo={addTodo} toggleAll={toggleAll}/>
       <Spacer />
-      <Todolist todos={todos} deleteTodo={deleteTodo}/>
+      <Todolist colorMode={colorMode} todos={todos} deleteTodo={deleteTodo} completeTodo={completeTodo} />
     </VStack>
   )
 }
