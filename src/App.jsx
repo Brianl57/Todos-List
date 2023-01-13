@@ -48,7 +48,14 @@ function App() {
         alignSelf="flex-end" 
         onClick={toggleColorMode} 
       />
-      <Heading m="8" fontWeight="extrabold" size="2xl" bgGradient="linear(to-r, pink.500, pink.300, blue.500)" bgClip="text">Todo Application</Heading>
+      <Heading 
+        m="8" 
+        p={1} 
+        fontWeight="extrabold" 
+        size="2xl" 
+        bgGradient="linear(to-r, pink.500, pink.300, blue.500)" 
+        bgClip="text"
+      >My Todo's</Heading>
       <Addtodo addTodo={addTodo}/>
       <Spacer />
       <Todolist todos={todos} deleteTodo={deleteTodo}/>
