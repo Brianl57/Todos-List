@@ -1,9 +1,22 @@
 import React from 'react';
-import { HStack, VStack, Text, IconButton, StackDivider, Spacer, Badge, Box } from '@chakra-ui/react';
+import { useState } from 'react';
+import { HStack, VStack, Text, IconButton, StackDivider, Spacer, Badge, Box, Button, CardBody} from '@chakra-ui/react';
 import { FaTrash } from 'react-icons/fa';
 import { CheckIcon } from '@chakra-ui/icons';
+import { Input, Editable, EditableInput, EditableTextarea, EditablePreview,} from '@chakra-ui/react'
 
-function Todolist({colorMode, todos, deleteTodo, completeTodo }) {
+function Todolist({colorMode, todos, deleteTodo, completeTodo, editTodo }) {
+    
+    const strikThroughColor = colorMode === "light" ? "#C2C5D3" : "#323744";
+    const [editedContent, setEditedContent] = useState("");
+
+    function handleSubmit(todoId) {
+        if(!editedContent) {
+            return 
+        } 
+        editTodo(todoId, editedContent);
+        setEditedContent("")
+    }
 
     if (!todos.length) {
         return (
@@ -12,8 +25,6 @@ function Todolist({colorMode, todos, deleteTodo, completeTodo }) {
             </Badge>
         )
     }
-
-    const strikThroughColor = colorMode === "light" ? "#C2C5D3" : "#323744";
 
   return (
     <VStack 
@@ -27,33 +38,43 @@ function Todolist({colorMode, todos, deleteTodo, completeTodo }) {
         alignItems="stretch"
     > 
         {todos.map(todo => (
-        
-            <HStack 
-                p={2} 
-                borderRadius={8} 
-                color={todo.complete? strikThroughColor : null }
-                key={todo.id}
-            >
-                <Text 
-                    fontWeight={800} 
-                    decoration={todo.complete? "line-through" : null} 
-                >&#x2022; {todo.body}</Text>
-                <Spacer />
-                <IconButton
-                    icon={<CheckIcon/>}
-                    variant="unstyled"
-                    isRound={true}
-                    size="sm"
-                    onClick={() => completeTodo(todo.id)}
-                />
-                <IconButton 
-                    icon={<FaTrash />} 
-                    isRound={true} 
-                    variant="unstyled"
-                    size="sm"
-                    onClick={() => deleteTodo(todo.id)}
-                />
-            </HStack>
+            
+                <HStack 
+                    p={2} 
+                    borderRadius={8} 
+                    color={todo.complete? strikThroughColor : null }
+                    key={todo.id}
+                >
+                
+                    <Editable
+                        defaultValue={todo.body}
+                        fontWeight={800}
+                        onSubmit={() => handleSubmit(todo.id)}
+                        selectAllOnFocus={false}
+                        placeholder={!editedContent?  todo.body : null}
+                    >
+                        <EditablePreview textDecoration={todo.complete? "line-through" : null}/>
+                        <EditableInput minW={{base: '40vw', sm: '45vw', lg: '30vw', xl: '25vw'}} value={editedContent} onChange={(e) => setEditedContent(e.target.value)}/>
+                    </Editable>
+           
+                    <Spacer />
+
+                    <IconButton
+                        icon={<CheckIcon/>}
+                        variant="unstyled"
+                        isRound={true}
+                        size="sm"
+                        onClick={() => completeTodo(todo.id)}
+                    />
+                    <IconButton 
+                        icon={<FaTrash />} 
+                        isRound={true} 
+                        variant="unstyled"
+                        size="sm"
+                        onClick={() => deleteTodo(todo.id)}
+                    />
+                </HStack>
+          
        
         ))}
     </VStack>

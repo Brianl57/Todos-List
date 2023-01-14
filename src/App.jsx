@@ -1,7 +1,7 @@
 import React from "react";
 import Todolist from "./components/TodoList";
 import Addtodo from "./components/AddTodo";
-import { Heading, Spacer } from '@chakra-ui/react';
+import { Heading, Input, Spacer, useToast } from '@chakra-ui/react';
 import { VStack, IconButton, useColorMode } from '@chakra-ui/react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
@@ -57,6 +57,12 @@ function App() {
 
   function addTodo(todo) {
     setTodos([todo, ...todos]);
+  }
+
+  function editTodo(todoId, editedContent) {
+    const editedTodos = todos.map(todo => todo.id === todoId? { ...todo,body: editedContent} : todo);
+    setTodos(editedTodos);
+    console.log("edit function ran")
   }
 
   function completeTodo(id) {    
@@ -130,7 +136,7 @@ function App() {
       >My Todo's</Heading>
       <Addtodo addTodo={addTodo} toggleAll={toggleAll}/>
       <Spacer />
-      <Todolist colorMode={colorMode} todos={todos} deleteTodo={deleteTodo} completeTodo={completeTodo} />
+      <Todolist colorMode={colorMode} todos={todos} deleteTodo={deleteTodo} completeTodo={completeTodo} editTodo={editTodo}/>
     </VStack>
   )
 }
