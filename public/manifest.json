@@ -1,0 +1,38 @@
+{
+  "name": "To-Day",
+  "short_name": "To-Day",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "maskable.png",
+      "size": "196x196",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+     "src": "to-day192.png",
+     "sizes": "192x192",
+     "type": "image/png"
+    }, 
+    {
+      "src": "to-day256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "to-day384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "to-day512.png",
+      "sizes": "512x512 ",
+      "type": "image/png"
+    }
+  ]
+  
+}

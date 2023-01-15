@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { HStack, VStack, Text, IconButton, StackDivider, Spacer, Badge, Box, Button, CardBody} from '@chakra-ui/react';
 import { FaTrash } from 'react-icons/fa';
 import { CheckIcon } from '@chakra-ui/icons';
-import { Input, Editable, EditableInput, EditableTextarea, EditablePreview,} from '@chakra-ui/react'
+import { Input, Editable, EditableInput, EditableTextarea, EditablePreview,} from '@chakra-ui/react' 
 
 function Todolist({colorMode, todos, deleteTodo, completeTodo, editTodo }) {
     
